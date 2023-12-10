@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Quizz.css">
+    <title>Quizz App</title>
+</head>
+<body>
+    <div id="container_1">
+        <div id="text">
+            <p>Assalaamu 'Aleykum wa Rahmatullâhi wa Barakatuhû. <br>
+                Bienvenue à notre quizz islamique ! <br> C'est une occasion d'en apprendre davantage sur les messagers d'Allah et la sainte parole révélée, certains obligations du musulman et bien d'autres.</p>
+        </div>
+        <button id="start">Commencer le Quizz</button>
+
+        <div id="condition">
+            <h3>Règles du Quizz</h3>
+            <div class="rules">
+                <ul>
+                    <li>Vous pouvez choisir autant de réponses possible.</li>
+                    <li>Appuyez sur <span>Soumettre</span> pour entrer votre réponse.</li>
+                    <li>Appuyez sur <span>Suivant</span> pour continuer.</li>
+                    <li>Vous pouvez <span>Quitter le Quizz</span> à tout moment .</li>
+                </ul>
+            </div>
+
+            <div class="condition_bottom">
+                <button id="quit">Précédent</button>
+                <button id="continue">Continuer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="container_2">
+        <h4>Question <span id="Qnumber">1</span>/20</h4>
+
+        
+        <h2 id="question">Quel nom portait le premier fils du prophète Ismaël ?</h2>
+            <div id="question"></div>
+            <div id="answer" class="btn_answer"></div>
+        <div class="quitOrContinue">
+            <button id="valid" class="btn_next">Soumettre</button>
+            <button id="next" class="btn_next">Suivant</button>
+            <button id="quizzQuit" class="btn_next">Quitter le Quizz</button>
+        </div>
+
+    </div>
+
+    <script src="Quizz.js"></script>
+</body>
+</html>

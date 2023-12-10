@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(Grand\ Mosque\ of\ Muscat\,\ Oman.jpeg);
+    font-family: "Poppins";
+}
+
+#container_1, #container_2{
+    background-color: white;
+    width: 700px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 20px 0px black;
+    color: gray;
+    position: relative;
+}
+
+h4{
+    padding: 20px 30px;
+}
+
+#question{
+    text-align: center;
+    padding-bottom: 2rem;
+    font-weight: 500;
+    font-size: 20px;
+    padding: 4rem;
+    color: black;
+}
+
+.btn_next{
+    padding: 8px 20px;
+    font-size: 17px;
+    border-radius: 10px;
+    border: solid 1px;
+    cursor: pointer;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+.quitOrContinue{
+    margin-right: 50px;
+}
+ul span{
+    color: dodgerblue;
+}
+#next{
+    background-color: dodgerblue;
+    color: white;
+    display: none;
+}
+#next:hover{
+    background-color: green;
+    color: white;
+}
+button{
+    cursor: pointer;
+}
+#quizzQuit{
+    background-color: gray;
+    color: white;
+}
+#quizzQuit:hover{
+    background-color: red;
+}
+
+#valid{
+    color: white;
+    background-color: dodgerblue;
+    border: 1px solid dodgerblue;
+}
+#valid:hover{
+    background-color: white;
+    color: dodgerblue;
+}
+
+#text{
+    display: flex;
+    color: black;
+    text-align: center;
+    font-size: 17px;
+}
+#container_1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#container_1 #start{
+    padding: 10px 30px;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: dodgerblue;
+    color: white;
+    border: 2px solid dodgerblue;
+    position: absolute;
+    top: 70%;
+    transform: translateY(-50%);
+}
+#container_1 #start:hover{
+    color: dodgerblue;
+    background-color: white;
+    transition: all ease .5s;
+}
+
+#condition ul{
+    color: black;
+}
+#condition ul li{
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+#condition h3{
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    font-size: 20px;
+}
+.condition_bottom button{
+    padding: 10px 15px;
+    font-size: 17px;
+    border-radius: 10px;
+    border: 1px solid;
+    margin-right: 10px;
+}
+.condition_bottom{
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+}
+#quit{
+    color: dodgerblue;
+}
+#quit:hover{
+    color: white;
+    background-color: red;
+}
+#continue{
+    background-color: dodgerblue;
+    color: white;
+}
+#continue:hover{
+    background-color: white;
+    color: dodgerblue;
+}
