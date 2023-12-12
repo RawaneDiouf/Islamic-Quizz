@@ -16,7 +16,7 @@ body{
     font-family: "Poppins";
 }
 
-#container_1, #container_2{
+#container_1, #container_2, #container_3{
     background-color: white;
     width: 700px;
     height: 500px;
@@ -39,7 +39,7 @@ h4{
     color: black;
 }
 
-.btn_next{
+.btn_next, #restart{
     padding: 8px 20px;
     font-size: 17px;
     border-radius: 10px;
@@ -49,8 +49,11 @@ h4{
     margin-right: 20px;
     margin-top: 20px;
 }
-.quitOrContinue{
-    margin-right: 50px;
+main .quitOrContinue{
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+    display: flex;
 }
 ul span{
     color: dodgerblue;
@@ -61,11 +64,15 @@ ul span{
     display: none;
 }
 #next:hover{
-    background-color: green;
-    color: white;
+    background-color: white;
+    color: dodgerblue;
 }
 button{
     cursor: pointer;
+    font-weight: 500;
+}
+.rules{
+    padding-left: 15%;
 }
 #quizzQuit{
     background-color: gray;
@@ -75,21 +82,26 @@ button{
     background-color: red;
 }
 
-#valid{
+#valid, #restart{
     color: white;
     background-color: dodgerblue;
     border: 1px solid dodgerblue;
 }
-#valid:hover{
+#valid:hover, #restart:hover{
     background-color: white;
     color: dodgerblue;
 }
-
 #text{
+    position: absolute;
+    bottom: 50%;
+    padding: 0px 30px;
+}
+.textContent{
     display: flex;
     color: black;
     text-align: center;
     font-size: 17px;
+    justify-content: center;
 }
 #container_1{
     display: flex;
@@ -106,7 +118,7 @@ button{
     color: white;
     border: 2px solid dodgerblue;
     position: absolute;
-    top: 70%;
+    top: 60%;
     transform: translateY(-50%);
 }
 #container_1 #start:hover{
@@ -154,4 +166,94 @@ button{
 #continue:hover{
     background-color: white;
     color: dodgerblue;
+}
+
+#register_page{
+    display: grid;
+    place-content: center;
+    background-color: white;
+    width: 700px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 20px 0px black;
+    color: black;
+    flex-direction: column;
+    position: relative;
+}
+#register_page input, #register_page select{
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-size: 17px;
+    margin-bottom: 20px;
+    width: 250px;
+    display: grid;
+    place-content: center;
+}
+#register_page input{
+    padding-right: 50px;
+}
+#register_page input:focus, #register_page select:focus{
+    outline-color: dodgerblue;
+}
+#register_page h2{
+    margin-bottom: 50px;
+    text-align: center;
+    color: gray;
+    font-size: 30px;
+}
+#register_page i{
+    font-size: 20px;
+    vertical-align: middle;
+}
+.bxs-user{
+    position: absolute;
+    right: 35%;
+    margin-top: 10px;
+}
+.bx-male-female{
+    position: absolute;
+    right: 35%;
+    margin-top: 10px;
+}
+#connect{
+    padding: 10px;
+    font-size: 17px;
+    color: white;
+    background-color: dodgerblue;
+    border: 1px solid dodgerblue;
+    border-radius: 10px;
+    width: 130px;
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+}
+#connect:hover{
+    background-color: white;
+    color: dodgerblue;
+}
+.civility select{
+    appearance: none;
+}
+.finishing{
+    position: absolute;
+    bottom: 10%;
+    right: 10%;   
+}
+.questionContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#answer{
+    position: absolute;
+    top: 50%;
+    transform: translateY(20%);
+    text-align: center;
+}
+.answer-button:hover{
+    background-color: dodgerblue;
+    color: white;
+    transition: all ease .25s;
 }

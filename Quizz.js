@@ -3,51 +3,64 @@ let Qnumber = 1;
 let Next = document.getElementById('next');
 let QuizzQuit = document.getElementById('quizzQuit');
 let Valid = document.getElementById('valid');
-
-
-//Suivant button
-Next.onclick = () =>{
-    if (Qnumber < Qtotal){
-        Qnumber++;
-        document.getElementById("Qnumber").innerHTML = Qnumber;
-
-        if(Qnumber == 20){
-            Valid.style.display = "inline";
-        }
-        else{
-            Valid.style.display = "none";
-        }
-    }
-}
-
-//Précédent button
-QuizzQuit.addEventListener('click', () => {
-    // if (Qnumber > 1){
-    //     Qnumber--;
-    //     document.getElementById("Qnumber").innerHTML = Qnumber;
-
-    //     if(Qnumber == 20){
-    //         Valid.style.display = "inline";
-    //     }
-    //     else{
-    //         Valid.style.display = "none";
-    //     }
-    // }
-    window.close();
-});
-
-//Valid button
-Valid.onclick = () =>{
-    Valid.style.display = "none";
-    Next.style.display = 'block';
-}
-
+let connect = document.getElementById('connect');
+let register = document.getElementById('register_page');
 
 //Rules
 let start = document.getElementById('start');
 let condition = document.getElementById('condition');
 let rulesContainer = document.getElementById('container_1');
 let text = document.getElementById('text');
+
+//Back and Continue
+let back = document.getElementById('quit');
+let continued = document.getElementById('continue');
+let quizContainer = document.getElementById('container_2');
+let finishing = document.getElementById('container_3');
+finishing.style.display = 'none';
+
+
+
+//Connect button
+rulesContainer.style.display = 'none';
+connect.onclick = () =>{
+    rulesContainer.style.display = '';
+    register.style.display = 'none';
+}
+//Suivant button
+Valid.style.display = 'none';
+Valid.onclick = () =>{
+    if (Qnumber < Qtotal){
+        Qnumber++;
+        document.getElementById("Qnumber").innerHTML = Qnumber;
+        nextQuestion();
+        loadQuestion();
+
+        if(Qnumber == 20){
+            Valid.style.display = "none";
+            Next.style.display = 'block';
+        }
+        else{
+            Valid.style.display = "block";
+        }
+    }
+
+    document.querySelectorAll('.answer').forEach(btn => {
+        btn.classList.add('disabled');
+    });    
+}
+
+//Précédent button
+QuizzQuit.onclick = () => {
+    if(Qnumber == 20){
+        Valid.style.display = "inline";
+    }
+    else{
+        Valid.style.display = "none";
+    }
+    window.close();
+};
+
 
 condition.style.display = 'none';
 start.onclick = () =>{
@@ -56,10 +69,6 @@ start.onclick = () =>{
     text.style.display = 'none';
 }
 
-//Back and Continue
-let back = document.getElementById('quit');
-let continued = document.getElementById('continue');
-let quizContainer = document.getElementById('container_2');
 
 back.onclick = () =>{
     start.style.display = 'block';
@@ -70,12 +79,122 @@ back.onclick = () =>{
 quizContainer.style.display = 'none';
 continued.onclick = () =>{
     quizContainer.style.display = 'block';
-    rulesContainer.style.display = 'none'
+    rulesContainer.style.display = 'none';
+
+    loadQuestion();
+}
+
+//Réponses
+let questions = document.getElementById('question');
+let respond = document.getElementById('answer');
+let questionContent = document.getElementById('questionContent');
+let restart = document.getElementById('restart');
+
+let currentPage = 0;
+let correctQuestion = 0;
+let askedQuestions = []
+
+//Go to next question
+let answered = false;
+function nextQuestion(e){
+    if(!answered){
+        if(e.target.getAttribute("data-correct") === "true"){
+            correctQuestion++;
+        }
+
+        document.querySelectorAll('.answer').forEach(button => {
+            button.disabled = true;
+        });
+        answered = true;
+    }
 }
 
 
-//Réponses
+function loadQuestion() {
+    //Mélanger les questions
+    if (askedQuestions.length === quizzData.length) {
+        askedQuestions = []; // Réinitialisez le tableau si toutes les questions ont été posées
+        shuffleQuestion(quizzData);
+    }
 
+    // Trouver la première question non posée
+    let currentIndex = 0;
+    while (askedQuestions.includes(currentIndex)) {
+        currentIndex++;
+    }
+
+    const item = quizzData[currentPage];
+    respond.innerHTML = "";
+    const questionElement = questionContent.querySelector('#question');
+    questionElement.innerHTML = item.question;
+
+    item.answers.forEach((answer, index) => {
+        const div = document.createElement('div');
+        const button = document.createElement('button');
+        button.textContent = answer.text;
+        button.setAttribute('data-correct', answer.correct);
+        button.id = `answer${index + 1}`;
+        button.classList.add('answer');
+
+        //Button answer style
+        button.style.padding = '5px 10px';
+        button.style.width = '250px';
+        button.style.marginBottom = '20px';
+        button.style.fontSize = '17px';
+        button.style.border = 'none';
+        button.style.borderRadius = '5px';
+        button.classList.add('answer-button');
+
+
+        //Soumission de reponse
+        button.addEventListener('click', function(){
+            document.querySelectorAll('.answer').forEach(btn =>{
+                btn.classList.remove('selected');
+                btn.classList.add('disabled');
+            });
+
+            // Sélectionner la réponse actuelle
+            button.classList.add('selected');
+
+            Valid.style.display = 'block';
+        });
+
+        div.appendChild(button);
+        respond.appendChild(div);
+    });
+
+    document.querySelectorAll('button').forEach((item) =>{
+        item.addEventListener('click', nextQuestion);
+    });
+}
+
+function initializeQuizzData(data) {
+    quizzData = data;
+    loadQuestion();
+}
+
+
+
+//Finishing quizz
+function finish() {
+    const textFinish = document.createElement('p');
+    const content = document.getElementById('container_2');
+    const contentFinish = document.getElementById('container_3');
+
+    textFinish.innerHTML = `Vous avez obtenu ${correctQuestion} sur ${Qtotal}`;
+    content.style.display = 'none';
+    contentFinish.style.display = 'flex';
+    contentFinish.appendChild(textFinish);
+}
+
+
+//Mélanger les questions function
+function shuffleQuestion(array){
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 
 //Quizz
@@ -169,7 +288,7 @@ const quizzData = [
     },
 
     {
-        question : "Quelle femme portait le nom de 'Oummoul Mouminîn ou Mère des croyantes' ?",
+        question : "Quelle femme portait le nom de 'Oummoul Mouminîn ou Mère des croyantes ?",
 
         answers : [
             {text : "Khadija", correct : true},
@@ -257,7 +376,7 @@ const quizzData = [
     },
 
     {
-        question : "Dans quelles sourates ont été mentionné le nom de Moussa ?",
+        question : "Dans quelles sourates a été mentionné le nom de Moussa ?",
 
         answers : [
             {text : "Al A'lâ", correct : true},

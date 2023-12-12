@@ -1,27 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr-FR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Quizz.css">
-    <title>Quizz App</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Quiz App</title>
 </head>
 <body>
-    <div id="container_1">
-        <div id="text">
-            <p>Assalaamu 'Aleykum wa Rahmatullâhi wa Barakatuhû. <br>
-                Bienvenue à notre quizz islamique ! <br> C'est une occasion d'en apprendre davantage sur les messagers d'Allah et la sainte parole révélée, certains obligations du musulman et bien d'autres.</p>
+    <div id="register_page">
+        <h2>Connexion</h2>
+        <div class="input_container">
+            <i class='bx bxs-user'></i>
+            <input type="text" placeholder="Nom d'utilisateur" id="name" required>
         </div>
-        <button id="start">Commencer le Quizz</button>
+        <div class="civility">
+            <i class='bx bx-male-female'></i>
+            <select name="genre" id="genre" required placeholder="Civilité">
+                    <option value="Civilité" selected disabled>Civilité</option>
+                    <option value="Sàng bi">Sàng Bi</option>
+                    <option value="Soxna ci">Soxna Ci</option>
+            </select>
+        </div>
+        <button id="connect">Se connecter</button>
+    </div>
+    <div id="container_1">
+        <div class="textContent">
+            <div id="text">
+                <p>Assalâmu 'Aleykum wa Rahmatullâhi wa Barakâtuhû. <br>
+                    Bienvenue à notre quiz islamique ! <br> C'est une occasion d'en apprendre davantage sur les messagers d'Allah, la sainte parole révélée, certains obligations du musulman et bien d'autres.</p>
+            </div>
+            <button id="start">Commencer le Quiz</button>
+        </div>
 
         <div id="condition">
-            <h3>Règles du Quizz</h3>
+            <h3>Règles du Quiz</h3>
             <div class="rules">
                 <ul>
-                    <li>Vous pouvez choisir autant de réponses possible.</li>
+                    <li>Vous pouvez choisir autant de réponses possibles.</li>
                     <li>Appuyez sur <span>Soumettre</span> pour entrer votre réponse.</li>
                     <li>Appuyez sur <span>Suivant</span> pour continuer.</li>
-                    <li>Vous pouvez <span>Quitter le Quizz</span> à tout moment .</li>
+                    <li>Vous n'obtiendrez les points que si vous trouvez la/les bonne(s) réponse(s).</li>
+                    <li>Vous pouvez <span>Quitter le Quiz</span> à tout moment .</li>
                 </ul>
             </div>
 
@@ -35,18 +55,27 @@
     <div id="container_2">
         <h4>Question <span id="Qnumber">1</span>/20</h4>
 
-        
-        <h2 id="question">Quel nom portait le premier fils du prophète Ismaël ?</h2>
-            <div id="question"></div>
-            <div id="answer" class="btn_answer"></div>
-        <div class="quitOrContinue">
-            <button id="valid" class="btn_next">Soumettre</button>
-            <button id="next" class="btn_next">Suivant</button>
-            <button id="quizzQuit" class="btn_next">Quitter le Quizz</button>
-        </div>
-
+        <main>
+            <div id="questionContent" class="questionContent">
+                <div id="question"></div>
+                <div id="answer" class="btn_answer"></div>
+            </div>
+            <div class="quitOrContinue">
+                <button id="quizzQuit" class="btn_next">Quitter le Quiz</button>
+                <button id="valid" class="btn_next">Soumettre</button>
+                <button id="next" class="btn_next">Suivant</button>
+            </div>
+        </main>
     </div>
 
-    <script src="Quizz.js"></script>
+    <div id="container_3">
+        <div class="finishing">
+            <button id="restart">Reprendre le Quiz</button>
+            <button id="quizzQuit" class="btn_next">Quitter le Quiz</button>
+            <p id="textFinishing"></p>
+        </div>
+    </div>
+
+    <script src="Quizz.js" type="module"></script>
 </body>
 </html>
