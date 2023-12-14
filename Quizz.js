@@ -30,36 +30,39 @@ connect.onclick = () =>{
 //Suivant button
 Valid.style.display = 'none';
 Valid.onclick = () =>{
-    if (Qnumber < Qtotal){
-        Qnumber++;
-        document.getElementById("Qnumber").innerHTML = Qnumber;
-        nextQuestion();
-        loadQuestion();
-
-        if(Qnumber == 20){
+    let answerSelected = getSelected();
+    if(answerSelected){
+        if (Qnumber < Qtotal){
+            Qnumber++;
+            document.getElementById("Qnumber").innerHTML = Qnumber;
+        }
+        if(Qnumber == Qtotal){
             Valid.style.display = "none";
             Next.style.display = 'block';
         }
         else{
             Valid.style.display = "block";
         }
-    }
+        loadNextQuestion();
 
-    document.querySelectorAll('.answer').forEach(btn => {
-        btn.classList.add('disabled');
-    });    
+        Next.onclick = () =>{
+            if(Qnumber == Qtotal){
+                finish();
+            }
+        }
+    }
 }
-
-//Précédent button
-QuizzQuit.onclick = () => {
-    if(Qnumber == 20){
-        Valid.style.display = "inline";
-    }
-    else{
-        Valid.style.display = "none";
-    }
-    window.close();
-};
+function getSelected() {
+    let answer;
+    document.querySelectorAll('.answer').forEach(btn => {
+        if (btn.classList.contains('selected')) {
+            answer = btn.getAttribute('data-correct');
+        }
+    });
+    return answer;
+}
+//Quitt button
+QuizzQuit.onclick = window.close();
 
 
 condition.style.display = 'none';
@@ -96,72 +99,100 @@ let askedQuestions = []
 
 //Go to next question
 let answered = false;
-function nextQuestion(e){
-    if(!answered){
-        if(e.target.getAttribute("data-correct") === "true"){
+function nextQuestion(event){
+    const target = event.currentTarget;
+    if (!answered) {
+        if (target.getAttribute("data-correct") === "true") {
             correctQuestion++;
         }
+        
 
         document.querySelectorAll('.answer').forEach(button => {
             button.disabled = true;
         });
         answered = true;
+
+        currentPage++;
+        loadQuestion();
+
+        if (currentPage < Qtotal) {
+            loadQuestion();
+        } else {
+            finish();
+        }        
     }
 }
 
+//Next question
+function loadNextQuestion() {
+    currentPage++;
+
+    if (currentPage < Qtotal) {
+        loadQuestion();
+    } else {
+        finish();
+    }
+}
 
 function loadQuestion() {
+    //Hide the button at every new question
+    Valid.style.display = 'none';
     //Mélanger les questions
-    if (askedQuestions.length === quizzData.length) {
-        askedQuestions = []; // Réinitialisez le tableau si toutes les questions ont été posées
-        shuffleQuestion(quizzData);
-    }
+    if(currentPage < Qtotal){
+        if (askedQuestions.length === Qtotal) {
+            askedQuestions = []; // Réinitialisez le tableau si toutes les questions ont été posées
+            shuffleQuestion(quizzData);
+        }
 
-    // Trouver la première question non posée
-    let currentIndex = 0;
-    while (askedQuestions.includes(currentIndex)) {
-        currentIndex++;
-    }
+        // Trouver la première question non posée
+        let currentIndex = Math.floor(Math.random() * Qtotal);
+        while (askedQuestions.includes(currentIndex)) {
+            currentIndex = (currentIndex + 1) % Qtotal;
+        }
 
-    const item = quizzData[currentPage];
-    respond.innerHTML = "";
-    const questionElement = questionContent.querySelector('#question');
-    questionElement.innerHTML = item.question;
+        const item = quizzData[currentIndex];
+        askedQuestions.push(currentIndex);
+        respond.innerHTML = "";
+        const questionElement = questionContent.querySelector('#question');
+        questionElement.innerHTML = item.question;
 
-    item.answers.forEach((answer, index) => {
-        const div = document.createElement('div');
-        const button = document.createElement('button');
-        button.textContent = answer.text;
-        button.setAttribute('data-correct', answer.correct);
-        button.id = `answer${index + 1}`;
-        button.classList.add('answer');
+        item.answers.forEach((answer, index) => {
+            const div = document.createElement('div');
+            const button = document.createElement('button');
+            button.textContent = answer.text;
+            button.setAttribute('data-correct', answer.correct);
+            button.id = `answer${index + 1}`;
+            button.classList.add('answer');
 
-        //Button answer style
-        button.style.padding = '5px 10px';
-        button.style.width = '250px';
-        button.style.marginBottom = '20px';
-        button.style.fontSize = '17px';
-        button.style.border = 'none';
-        button.style.borderRadius = '5px';
-        button.classList.add('answer-button');
+            //Button answer style
+            button.style.padding = '5px 10px';
+            button.style.width = '250px';
+            button.style.marginBottom = '20px';
+            button.style.fontSize = '17px';
+            button.style.border = 'none';
+            button.style.borderRadius = '5px';
+            button.classList.add('answer-button');
 
 
-        //Soumission de reponse
-        button.addEventListener('click', function(){
-            document.querySelectorAll('.answer').forEach(btn =>{
-                btn.classList.remove('selected');
-                btn.classList.add('disabled');
+            //Soumission de reponse
+            button.addEventListener('click', function(){
+                document.querySelectorAll('.answer').forEach(btn =>{
+                    btn.classList.remove('selected');
+                    btn.classList.add('disabled');
+                });
+
+                // Sélectionner la réponse actuelle
+                button.classList.add('selected');
+
+                Valid.style.display = 'block';
             });
 
-            // Sélectionner la réponse actuelle
-            button.classList.add('selected');
-
-            Valid.style.display = 'block';
+            div.appendChild(button);
+            respond.appendChild(div);
         });
-
-        div.appendChild(button);
-        respond.appendChild(div);
-    });
+    }else{
+        finish();
+    }
 
     document.querySelectorAll('button').forEach((item) =>{
         item.addEventListener('click', nextQuestion);
@@ -200,12 +231,12 @@ function shuffleQuestion(array){
 //Quizz
 const quizzData = [
     {
-        question : "Quel nom portait la coépouse de Hadjara, femme de Abraham et mère d'Ismaël ?",
+        question : "Quel nom portait la coépouse de Hâjara, femme de Abraham et mère d'Ismaël ?",
         
         answers : [
             {text : "Qusay", correct : false},
-            {text : "Saarata", correct : true},
-            {text : "Fatima", correct : false},
+            {text : "Sârata", correct : true},
+            {text : "Fâtima", correct : false},
             {text : "Lubna", correct : false},
         ],
     },
@@ -214,9 +245,9 @@ const quizzData = [
         question : "Comment s'appelle le prophète qui communiquait avec les animaux ?",
         
         answers : [
-            {text : "Dawoud", correct : false},
-            {text : "Souleymane", correct : true},
-            {text : "Idriss", correct : false},
+            {text : "Dâwûda", correct : false},
+            {text : "Suleymân", correct : true},
+            {text : "Idrîss", correct : false},
             {text : "Louth", correct : false},
         ],
     },
@@ -225,9 +256,9 @@ const quizzData = [
         question : "Quel nom portait le premier fils du prophète Ismaël ?",
         
         answers : [
-            {text : "Khassim", correct : false},
-            {text : "Abuu Hurayra", correct : false},
-            {text : "Nabith", correct : true},
+            {text : "Xâssim", correct : false},
+            {text : "Abû Hurayra", correct : false},
+            {text : "Nâbith", correct : true},
             {text : "Abbas", correct : false},
         ],
     },
@@ -244,11 +275,11 @@ const quizzData = [
     },
 
     {
-        question : "Qui a crée la première école de jurisprudence entre ces Imams ?",
+        question : "Qui a crée la première école de jurisprudence entre ces Imâms ?",
    
         answers : [
-            {text : "Abuu Hanifa", correct : false},
-            {text : "Malick", correct : false},
+            {text : "Abû Hanîfa", correct : false},
+            {text : "Mâlick", correct : false},
             {text : "Hanbal", correct : false},
             {text : "Châfi", correct : true},
         ],
@@ -260,8 +291,8 @@ const quizzData = [
         answers : [
             {text : "Kahfi", correct : true},
             {text : "Tâ-hâ", correct : false},
-            {text : "Yunus", correct : false},
-            {text : "Ma-ida", correct : false},
+            {text : "Yûnus", correct : false},
+            {text : "Mâ-ida", correct : false},
         ],
     },
 
@@ -280,21 +311,21 @@ const quizzData = [
         question : "Quel est le nom du prophète qui a vécu le plus longtemps sur terre  ?",
 
         answers : [
-            {text : "Nuh", correct : true},
+            {text : "Nûh", correct : true},
             {text : "Hudar", correct : false},
             {text : "Yanqûba", correct : false},
-            {text : "Aadama", correct : false},
+            {text : "Âdama", correct : false},
         ],
     },
 
     {
-        question : "Quelle femme portait le nom de 'Oummoul Mouminîn ou Mère des croyantes ?",
+        question : 'Quelle femme portait le nom de "Oummoul Mouminîn" ou "Mère des croyantes" ?',
 
         answers : [
-            {text : "Khadija", correct : true},
+            {text : "Xadîja", correct : true},
             {text : "Aïcha", correct : false},
-            {text : "Oumou Kalsoum", correct : false},
-            {text : "Amina", correct : false},
+            {text : "Ummu Kalsum", correct : false},
+            {text : "Âmina", correct : false},
         ],
     },
 
@@ -336,9 +367,9 @@ const quizzData = [
 
         answers : [
             {text : "Zayd", correct : false},
-            {text : "Ousmane", correct : true},
-            {text : "Oumar", correct : false},
-            {text : "Abuu Bakr", correct : false},
+            {text : "Usmân", correct : true},
+            {text : "Umar", correct : false},
+            {text : "Abû Bakr", correct : false},
         ],
     },
 
@@ -346,10 +377,10 @@ const quizzData = [
         question : "Le livre Zabour a été attribué à quel prophète ?",
 
         answers : [
-            {text : "Daawuda", correct : true},
-            {text : "Souleymane", correct : false},
-            {text : "Moussa", correct : false},
-            {text : "Youssouf", correct : false},
+            {text : "Dâwûda", correct : true},
+            {text : "Insa", correct : false},
+            {text : "Mûssâ", correct : false},
+            {text : "Yûsuf", correct : false},
         ],
     },
 
@@ -368,26 +399,26 @@ const quizzData = [
         question : "Parmi ces noms, qui étaient des mécréants ?",
 
         answers : [
-            {text : "Abuu Jahlin", correct : true},
-            {text : "Abuu Lahab", correct : true},
-            {text : "Abuu Hurayra", correct : false},
-            {text : "Abuu Thawrin", correct : false},
+            {text : "Abû Jahlin", correct : true},
+            {text : "Abû Lahab", correct : true},
+            {text : "Abû Hurayra", correct : false},
+            {text : "Abû Thawrin", correct : false},
         ],
     },
 
     {
-        question : "Dans quelles sourates a été mentionné le nom de Moussa ?",
+        question : "Dans quelles sourates a été mentionné le nom de Mûssâ ?",
 
         answers : [
             {text : "Al A'lâ", correct : true},
             {text : "Al Baqara", correct : true},
             {text : "Tâ-hâ", correct : true},
-            {text : "Al Isra", correct : true},
+            {text : "Al Isrâ", correct : true},
         ],
     },
 
     {
-        question : "Quel nom portait le père du prophète Abraham (Aleyhi Salaam) ?",
+        question : "Quel nom portait le père du prophète Abraham (Aleyhi Salâm) ?",
 
         answers : [
             {text : "Azar", correct : true},
@@ -401,11 +432,21 @@ const quizzData = [
         question : "Dans quelle Sourate a été mentionné le nom de la mosquée Al aqçâ de Jérusalem ?",
 
         answers : [
-            {text : "Âli Imraan", correct : false},
+            {text : "Âli Imrân", correct : false},
             {text : "Al Baqara", correct : false},
             {text : "Ar-Ra'd", correct : false},
-            {text : "Al Isra", correct : true},
+            {text : "Al Isrâ", correct : true},
         ],
     },
 
+    {
+        question : "Comment je m'appelle ?",
+
+        answers : [
+            {text : "Sheex", correct : false},
+            {text : "Mamadu", correct : false},
+            {text : "Abdu", correct : false},
+            {text : "Rawaan", correct : true},
+        ],
+    },
 ]
