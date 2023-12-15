@@ -99,8 +99,7 @@ let askedQuestions = []
 
 //Go to next question
 let answered = false;
-function nextQuestion(event){
-    const target = event.currentTarget;
+function nextQuestion(){
     if (!answered) {
         if (target.getAttribute("data-correct") === "true") {
             correctQuestion++;
@@ -248,7 +247,7 @@ const quizzData = [
             {text : "Dâwûda", correct : false},
             {text : "Suleymân", correct : true},
             {text : "Idrîss", correct : false},
-            {text : "Louth", correct : false},
+            {text : "Lûth", correct : false},
         ],
     },
 
